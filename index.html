@@ -247,16 +247,12 @@
       justify-content: center;
       padding: 32px 0;
     }
-    .slide .polaroid { width: min(270px, 68%); }
-    /* 署名：和標題下方同一款英文草寫 */
-    .slide figcaption {
-      font-family: var(--script);
-      font-size: 20px;
-      line-height: 1.2;
-      color: var(--gold);
-      text-align: left;
-      letter-spacing: 0;
-      padding: 14px 6px 18px;
+    /* 直接顯示作品本身（作品自帶拍立得邊框，不再加相框） */
+    .slide .work {
+      width: min(270px, 68%);
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      box-shadow: 0 1px 1px rgba(43,41,38,.04), 0 18px 40px -24px rgba(43,41,38,.28);
     }
     .nav {
       position: absolute;
@@ -279,12 +275,30 @@
     .nav:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
     .nav.prev { left: 10px; }
     .nav.next { right: 10px; }
+    /* 框外下方一列：左邊署名，中間頁碼 */
+    .carousel-foot {
+      max-width: 520px;
+      margin: 12px auto 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+    .credit {
+      margin: 0;
+      transform: translateY(-16px);   /* 往上貼近滑動框 */
+      font-family: var(--script);
+      font-size: 17px;
+      line-height: 1.2;
+      color: var(--gold);
+      text-align: left;
+      white-space: nowrap;
+    }
     .pager {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 24px;
-      margin-top: 20px;
+      margin-top: 0;
     }
     .dots { display: flex; gap: 10px; }
     .dots button {
@@ -310,6 +324,13 @@
       border-top: 1px solid var(--line);
     }
     footer .signature { font-size: 28px; margin: 0; }
+
+    img {
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
 
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
@@ -340,7 +361,7 @@
       </div>
       <!-- 拍攝條件及流程：一行一條，要新增就複製一行並把編號往下排 -->
       <ul class="conditions">
-        <li><span class="num">01</span><span>標示價格為單張拍立得（含繪簽）的價格</span></li>
+        <li><span class="num">01</span><span>標示價格為單張拍立得（含繪簽）的價格，費用以 gil 支付，於下單時付清</span></li>
         <li><span class="num">02</span><span>每張拍立得最多三人同框，可與同行友人或是攝影師 Iara 合照</span></li>
         <li><span class="num">03</span><span>繪簽可指定文字（例如 To: 名字），裝飾風格由繪者自由發揮</span></li>
         <li><span class="num">04</span><span>請告知想要拍攝的地點，可於 404 酒吧店內或是戶外場合</span></li>
@@ -348,8 +369,7 @@
         <li><span class="num">06</span><span>下單後請預留 15–20 分鐘進行拍攝，攝影師接單情況視當天人潮而定</span></li>
         <li><span class="num">07</span><span>購買後當天進行拍攝，拍攝原始照片會提供給委託人預覽，雙方確認後進行繪簽製作</span></li>
         <li><span class="num">08</span><span>拍攝完成後約 3 天內交件，提供連結追蹤後製進度及高解析度圖檔下載</span></li>
-        <li><span class="num">09</span><span>費用以 gil 支付，於下單時付清</span></li>
-        <li><span class="num">10</span><span>作品可能收錄於作品集展示，不希望公開請事先告知</span></li>
+        <li><span class="num">09</span><span>作品可能收錄於作品集展示，不希望公開請事先告知</span></li>
       </ul>
       <p class="note">*細節可與攝影師細部討論後，再評估下單與否</p>
       <div class="price">
@@ -364,43 +384,28 @@
         <span class="en">Works</span>
       </div>
       <!-- 作品圖：把圖片放到 images/ 資料夾，檔名對上 work-1.jpg、work-2.jpg、work-3.jpg 即可 -->
-      <!-- 想多放幾張：複製一整段 <div class="slide">…</div>，圓點和頁碼會自動增加 -->
+      <!-- 想多放幾張：複製一整段 <div class="slide">…</div> 並改檔名，圓點和頁碼會自動增加 -->
       <div class="carousel">
         <div class="track" id="track">
           <div class="slide">
-            <figure class="polaroid">
-              <div class="photo">
-                <img src="images/work-1.jpg" alt="作品一" onerror="this.parentElement.classList.add('empty')">
-                <span class="ph">work i</span>
-              </div>
-              <figcaption>Photo by Iara</figcaption>
-            </figure>
+            <img class="work" src="images/work-1.jpg" alt="作品一" draggable="false">
           </div>
           <div class="slide">
-            <figure class="polaroid">
-              <div class="photo">
-                <img src="images/work-2.jpg" alt="作品二" onerror="this.parentElement.classList.add('empty')">
-                <span class="ph">work ii</span>
-              </div>
-              <figcaption>Photo by Iara</figcaption>
-            </figure>
+            <img class="work" src="images/work-2.jpg" alt="作品二" draggable="false">
           </div>
           <div class="slide">
-            <figure class="polaroid">
-              <div class="photo">
-                <img src="images/work-3.jpg" alt="作品三" onerror="this.parentElement.classList.add('empty')">
-                <span class="ph">work iii</span>
-              </div>
-              <figcaption>Photo by Iara</figcaption>
-            </figure>
+            <img class="work" src="images/work-3.jpg" alt="作品三" draggable="false">
           </div>
         </div>
         <button class="nav prev" type="button" aria-label="上一張">‹</button>
         <button class="nav next" type="button" aria-label="下一張">›</button>
       </div>
-      <div class="pager">
-        <div class="dots" id="dots"></div>
-        <span class="count" id="count"></span>
+      <div class="carousel-foot">
+        <p class="credit">Photo by Iara</p>
+        <div class="pager">
+          <div class="dots" id="dots"></div>
+          <span class="count" id="count"></span>
+        </div>
       </div>
     </section>
   </main>
@@ -410,6 +415,10 @@
   </footer>
 
   <script>
+    // 停用右鍵選單與圖片拖曳
+    document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    document.addEventListener('dragstart', function (e) { if (e.target.tagName === 'IMG') e.preventDefault(); });
+
     (function () {
       var track = document.getElementById('track');
       var slides = track.querySelectorAll('.slide');
