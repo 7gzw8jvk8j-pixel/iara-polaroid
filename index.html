@@ -139,7 +139,7 @@
 
     /* ---------- 拍攝條件 ---------- */
     .conditions {
-      max-width: 34em;
+      max-width: 720px;
       margin: 0 auto;
       padding: 0;
       list-style: none;
@@ -149,7 +149,7 @@
       border-bottom: 1px solid var(--line);
     }
     .conditions li:first-child { border-top: 1px solid var(--line); }
-    .conditions li { display: flex; gap: 1.1em; align-items: baseline; }
+    .conditions li { display: flex; gap: 1.1em; align-items: baseline; line-height: 1.6; text-align: left; }
     .conditions .num {
       font-family: var(--serif-en);
       font-style: italic;
@@ -160,10 +160,22 @@
     }
     .conditions .todo { color: var(--muted); }
 
+    /* 條件下方的小註解 */
+    .note {
+      max-width: 720px;   /* 和價格列同寬，右緣對齊 print */
+      margin: 14px auto 0;
+      font-size: 12px;
+      font-weight: 500;
+      font-style: italic;
+      text-align: right;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
     /* ---------- 價格 ---------- */
     /* 放在拍攝條件最後一條底線下方，靠右 */
     .price {
-      max-width: 34em;
+      max-width: 720px;
       margin: 24px auto 0;
       display: flex;
       justify-content: flex-end;
@@ -326,12 +338,20 @@
         <h2>拍攝條件及流程</h2>
         <span class="en">Conditions &amp; Process</span>
       </div>
-      <!-- 在這裡補上拍攝條件：把「（待補）」換成內容，並把 class="todo" 拿掉；要加第 4 條就複製一行、編號改 04 -->
+      <!-- 拍攝條件及流程：一行一條，要新增就複製一行並把編號往下排 -->
       <ul class="conditions">
-        <li><span class="num">01</span><span class="todo">（待補）</span></li>
-        <li><span class="num">02</span><span class="todo">（待補）</span></li>
-        <li><span class="num">03</span><span class="todo">（待補）</span></li>
+        <li><span class="num">01</span><span>標示價格為單張拍立得（含繪簽）的價格</span></li>
+        <li><span class="num">02</span><span>每張拍立得最多三人同框，可與同行友人或是攝影師 Iara 合照</span></li>
+        <li><span class="num">03</span><span>繪簽可指定文字（例如 To: 名字），裝飾風格由繪者自由發揮</span></li>
+        <li><span class="num">04</span><span>請告知想要拍攝的地點，可於 404 酒吧店內或是戶外場合</span></li>
+        <li><span class="num">05</span><span>拍攝主要以人物互動為主、記錄美好的時刻，背景視情況可能會有所簡略</span></li>
+        <li><span class="num">06</span><span>購買後當天進行拍攝，拍攝原始照片會提供給委託人預覽，雙方確認後進行繪簽製作</span></li>
+        <li><span class="num">07</span><span>下單後請預留 15–20 分鐘進行拍攝，攝影師接單情況視當天人潮而定</span></li>
+        <li><span class="num">08</span><span>拍攝完成後約 3 天內交件，提供連結追蹤後製進度及高解析度圖檔下載</span></li>
+        <li><span class="num">09</span><span>費用以 gil 支付，於下單時付清</span></li>
+        <li><span class="num">10</span><span>作品可能收錄於作品集展示，不希望公開請事先告知</span></li>
       </ul>
+      <p class="note">*細節可與攝影師細部討論後，再評估下單與否</p>
       <div class="price">
         <span class="label"><span class="en">Price</span></span>
         <p class="amount"><span class="num">250,000</span><span class="unit">gil per print</span></p>
