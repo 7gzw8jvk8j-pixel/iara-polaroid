@@ -7,7 +7,7 @@
   <meta name="description" content="拍立得繪簽 拍攝服務介紹：拍攝條件、價格與作品。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Pinyon+Script&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Pinyon+Script&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #F2F2EF;        /* 霧白紙 */
@@ -176,25 +176,35 @@
       font-weight: 400;
       letter-spacing: .2em;
     }
+    /* 價格整行和 Works 同字體：Cormorant Garamond 斜體 */
     .price .label .en {
       margin-left: 0;
-      font-family: var(--script);
+      font-family: var(--serif-en);
+      font-style: italic;
       font-weight: 300;
       font-size: 19px;
       color: var(--muted);
       letter-spacing: .04em;
     }
-    /* 數字用和頁首簽名同一款手寫體 */
     .price .amount {
       margin: 0;
-      font-family: var(--script);
-      font-weight: 400;
+      font-family: var(--serif-en);
+      font-style: italic;
+      font-weight: 300;
+      font-variant-numeric: lining-nums;
       font-size: 21px;
       letter-spacing: .02em;
     }
+    /* 數字：再斜一點、稍粗、顏色加深 */
+    .price .amount .num {
+      display: inline-block;
+      font-weight: 500;
+      color: #524E48;   /* 介於深墨與 Price 的灰之間 */
+      transform: skewX(-6deg);
+    }
     .price .unit {
-      /* 和 Price、標題下的 Polaroid & Signature 同一款草寫 */
-      font-family: var(--script);
+      font-family: var(--serif-en);
+      font-style: italic;
       font-weight: 300;
       font-size: 19px;
       color: var(--gold);
@@ -324,7 +334,7 @@
       </ul>
       <div class="price">
         <span class="label"><span class="en">Price</span></span>
-        <p class="amount">250,000<span class="unit">gil per print</span></p>
+        <p class="amount"><span class="num">250,000</span><span class="unit">gil per print</span></p>
       </div>
     </section>
 
