@@ -72,6 +72,7 @@
       color: var(--muted);
       letter-spacing: .02em;
     }
+    .lede + .lede { margin-top: 2px; }
 
     /* ---------- 拍立得（擺正，不歪斜） ---------- */
     .polaroid {
@@ -148,6 +149,15 @@
       border-bottom: 1px solid var(--line);
     }
     .conditions li:first-child { border-top: 1px solid var(--line); }
+    .conditions li { display: flex; gap: 1.1em; align-items: baseline; }
+    .conditions .num {
+      font-family: var(--serif-en);
+      font-style: italic;
+      font-size: 19px;
+      color: var(--gold);
+      font-variant-numeric: lining-nums;
+      flex: none;
+    }
     .conditions .todo { color: var(--muted); }
 
     /* ---------- 價格 ---------- */
@@ -180,24 +190,99 @@
       margin: 0;
       font-family: var(--script);
       font-weight: 400;
-      font-size: 30px;   /* 手寫體字面較小，放大才會和旁邊的字看起來一樣大 */
+      font-size: 24px;
       letter-spacing: .02em;
     }
     .price .unit {
-      font-family: var(--script);
-      font-size: 19px;   /* 和旁邊的 Price 一樣大 */
+      /* 和旁邊的 Price 同字體、同大小 */
+      font-family: var(--serif-en);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 19px;
       color: var(--gold);
       margin-left: .25em;
     }
 
     /* ---------- 作品 ---------- */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 32px;
+    /* 翻頁式：一次看一張，可左右滑或按箭頭 */
+    .carousel {
+      position: relative;
+      max-width: 520px;
+      margin: 0 auto;
+      border: 1px solid var(--line);
     }
-    .gallery .polaroid { transition: box-shadow .3s ease; }
-    .gallery .polaroid:hover { box-shadow: 0 1px 1px rgba(43,41,38,.04), 0 24px 48px -22px rgba(43,41,38,.38); }
+    .track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .track::-webkit-scrollbar { display: none; }
+    .slide {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+      display: flex;
+      justify-content: center;
+      padding: 32px 0;
+    }
+    .slide .polaroid { width: min(240px, 62%); }
+    /* 署名：和標題下方同一款英文草寫 */
+    .slide figcaption {
+      font-family: var(--script);
+      font-size: 24px;
+      line-height: 1.2;
+      color: var(--gold);
+      text-align: left;
+      letter-spacing: 0;
+      padding: 14px 6px 18px;
+    }
+    .nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--serif-en);
+      font-size: 24px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      padding: 0 0 3px;
+    }
+    .nav:disabled { opacity: .35; cursor: default; }
+    .nav:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .nav.prev { left: 10px; }
+    .nav.next { right: 10px; }
+    .pager {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      margin-top: 20px;
+    }
+    .dots { display: flex; gap: 10px; }
+    .dots button {
+      width: 9px; height: 9px;
+      padding: 0;
+      border-radius: 50%;
+      border: 1px solid var(--muted);
+      background: transparent;
+      cursor: pointer;
+    }
+    .dots button[aria-current="true"] { background: var(--muted); }
+    .count {
+      font-family: var(--serif-en);
+      font-style: italic;
+      font-size: 17px;
+      color: var(--muted);
+      font-variant-numeric: lining-nums;
+    }
 
     footer {
       text-align: center;
@@ -223,7 +308,8 @@
         <span class="ph">cover photo</span>
       </div>
     </figure>
-    <p class="lede">a photograph, signed by hand</p>
+    <p class="lede">a photograph, signed by hand,</p>
+    <p class="lede">to keep the moments that are yours alone</p>
   </header>
 
   <main class="wrap">
@@ -232,11 +318,11 @@
         <h2>拍攝條件及流程</h2>
         <span class="en">Conditions &amp; Process</span>
       </div>
-      <!-- 在這裡補上拍攝條件：一行一個 <li>，把 class="todo" 拿掉即可 -->
+      <!-- 在這裡補上拍攝條件：把「（待補）」換成內容，並把 class="todo" 拿掉；要加第 4 條就複製一行、編號改 04 -->
       <ul class="conditions">
-        <li class="todo">條件一（待補）</li>
-        <li class="todo">條件二（待補）</li>
-        <li class="todo">條件三（待補）</li>
+        <li><span class="num">01</span><span class="todo">（待補）</span></li>
+        <li><span class="num">02</span><span class="todo">（待補）</span></li>
+        <li><span class="num">03</span><span class="todo">（待補）</span></li>
       </ul>
       <div class="price">
         <span class="label">價格<span class="en">Price</span></span>
@@ -250,28 +336,43 @@
         <span class="en">Works</span>
       </div>
       <!-- 作品圖：把圖片放到 images/ 資料夾，檔名對上 work-1.jpg、work-2.jpg、work-3.jpg 即可 -->
-      <div class="gallery">
-        <figure class="polaroid">
-          <div class="photo">
-            <img src="images/work-1.jpg" alt="作品一" loading="lazy" onerror="this.parentElement.classList.add('empty')">
-            <span class="ph">work i</span>
+      <!-- 想多放幾張：複製一整段 <div class="slide">…</div>，圓點和頁碼會自動增加 -->
+      <div class="carousel">
+        <div class="track" id="track">
+          <div class="slide">
+            <figure class="polaroid">
+              <div class="photo">
+                <img src="images/work-1.jpg" alt="作品一" onerror="this.parentElement.classList.add('empty')">
+                <span class="ph">work i</span>
+              </div>
+              <figcaption>Photo by Iara</figcaption>
+            </figure>
           </div>
-          <figcaption>作品一</figcaption>
-        </figure>
-        <figure class="polaroid">
-          <div class="photo">
-            <img src="images/work-2.jpg" alt="作品二" loading="lazy" onerror="this.parentElement.classList.add('empty')">
-            <span class="ph">work ii</span>
+          <div class="slide">
+            <figure class="polaroid">
+              <div class="photo">
+                <img src="images/work-2.jpg" alt="作品二" onerror="this.parentElement.classList.add('empty')">
+                <span class="ph">work ii</span>
+              </div>
+              <figcaption>Photo by Iara</figcaption>
+            </figure>
           </div>
-          <figcaption>作品二</figcaption>
-        </figure>
-        <figure class="polaroid">
-          <div class="photo">
-            <img src="images/work-3.jpg" alt="作品三" loading="lazy" onerror="this.parentElement.classList.add('empty')">
-            <span class="ph">work iii</span>
+          <div class="slide">
+            <figure class="polaroid">
+              <div class="photo">
+                <img src="images/work-3.jpg" alt="作品三" onerror="this.parentElement.classList.add('empty')">
+                <span class="ph">work iii</span>
+              </div>
+              <figcaption>Photo by Iara</figcaption>
+            </figure>
           </div>
-          <figcaption>作品三</figcaption>
-        </figure>
+        </div>
+        <button class="nav prev" type="button" aria-label="上一張">‹</button>
+        <button class="nav next" type="button" aria-label="下一張">›</button>
+      </div>
+      <div class="pager">
+        <div class="dots" id="dots"></div>
+        <span class="count" id="count"></span>
       </div>
     </section>
   </main>
@@ -280,5 +381,45 @@
     <p class="signature">Polaroid &amp; Signature</p>
   </footer>
 
+  <script>
+    (function () {
+      var track = document.getElementById('track');
+      var slides = track.querySelectorAll('.slide');
+      var dotsBox = document.getElementById('dots');
+      var count = document.getElementById('count');
+      var prev = document.querySelector('.nav.prev');
+      var next = document.querySelector('.nav.next');
+      var total = slides.length;
+      var current = 0;
+
+      function go(i) {
+        i = Math.max(0, Math.min(total - 1, i));
+        track.scrollTo({ left: i * track.clientWidth });
+      }
+
+      for (var i = 0; i < total; i++) {
+        var d = document.createElement('button');
+        d.type = 'button';
+        d.setAttribute('aria-label', '第 ' + (i + 1) + ' 張');
+        d.addEventListener('click', go.bind(null, i));
+        dotsBox.appendChild(d);
+      }
+      var dots = dotsBox.querySelectorAll('button');
+
+      function update() {
+        current = Math.round(track.scrollLeft / track.clientWidth);
+        dots.forEach(function (d, i) { d.setAttribute('aria-current', i === current ? 'true' : 'false'); });
+        count.textContent = (current + 1) + ' / ' + total;
+        prev.disabled = current === 0;
+        next.disabled = current === total - 1;
+      }
+
+      prev.addEventListener('click', function () { go(current - 1); });
+      next.addEventListener('click', function () { go(current + 1); });
+      track.addEventListener('scroll', function () { window.requestAnimationFrame(update); });
+      window.addEventListener('resize', function () { go(current); });
+      update();
+    })();
+  </script>
 </body>
 </html>
