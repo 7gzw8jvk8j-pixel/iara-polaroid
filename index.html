@@ -7,16 +7,20 @@
   <meta name="description" content="拍立得繪簽 拍攝服務介紹：拍攝條件、價格與作品。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Pinyon+Script&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #DCE3E9;        /* 霧藍桌面 */
-      --paper: #FCFBF7;     /* 相紙白 */
-      --ink: #2A2F45;       /* 簽字筆墨色 */
-      --muted: #687086;
-      --gold: #9C7020;      /* gil 金 */
-      --photo: #3A3F52;     /* 顯影前的相片底色 */
-      --rule: #C7CFD7;
+      --bg: #F2F2EF;        /* 霧白紙 */
+      --paper: #FFFFFF;     /* 相紙 */
+      --ink: #2B2926;       /* 炭墨 */
+      --muted: #635E57;     /* 淡墨 */
+      --line: #D9D5CE;      /* 細線 */
+      --gold: #7A6638;      /* 霧金，只用在簽名與價格 */
+      --photo: #E4E2DD;     /* 空相片底 */
+
+      --serif-tc: "Noto Serif TC", "Songti TC", serif;
+      --serif-en: "Cormorant Garamond", "Noto Serif TC", serif;
+      --script: "Pinyon Script", cursive;
     }
 
     * { box-sizing: border-box; }
@@ -25,19 +29,56 @@
       margin: 0;
       background: var(--bg);
       color: var(--ink);
-      font-family: "Noto Sans TC", system-ui, sans-serif;
-      font-size: 17px;
-      line-height: 1.75;
+      font-family: var(--serif-tc);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.9;
+      letter-spacing: .03em;
     }
     img { display: block; max-width: 100%; }
-    .wrap { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
 
-    /* ---------- 拍立得相框（共用） ---------- */
+    /* ---------- 首屏 ---------- */
+    .hero {
+      text-align: center;
+      padding: 88px 0 72px;
+    }
+    .hero h1 {
+      margin: 0;
+      font-family: var(--serif-tc);
+      font-weight: 300;
+      font-size: clamp(34px, 9vw, 52px);
+      line-height: 1.3;
+      letter-spacing: .32em;
+      padding-left: .32em; /* 補回字距造成的視覺偏移 */
+    }
+    .signature {
+      margin: 6px 0 0;
+      font-family: var(--script);
+      font-size: clamp(30px, 8vw, 40px);
+      line-height: 1.2;
+      color: var(--gold);
+      letter-spacing: 0;
+    }
+    .hero .polaroid {
+      width: min(340px, 100%);
+      margin: 56px auto 0;
+    }
+    .lede {
+      margin: 36px 0 0;
+      font-family: var(--serif-en);
+      font-style: italic;
+      font-size: 19px;
+      color: var(--muted);
+      letter-spacing: .02em;
+    }
+
+    /* ---------- 拍立得（擺正，不歪斜） ---------- */
     .polaroid {
       margin: 0;
       background: var(--paper);
-      padding: 14px 14px 0;
-      box-shadow: 0 1px 2px rgba(42,47,69,.12), 0 12px 28px -12px rgba(42,47,69,.35);
+      padding: 12px 12px 0;
+      box-shadow: 0 1px 1px rgba(43,41,38,.04), 0 18px 40px -24px rgba(43,41,38,.28);
     }
     .photo {
       position: relative;
@@ -50,142 +91,120 @@
       display: none;
       position: absolute; inset: 0;
       place-items: center;
-      color: #A9AFC0;
-      font-size: 15px;
-      text-align: center;
-      padding: 1em;
+      font-family: var(--serif-en);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--muted);
     }
     .photo.empty img { display: none; }
     .photo.empty .ph { display: grid; }
     .polaroid figcaption {
-      font-family: "LXGW WenKai TC", serif;
-      padding: 14px 4px 18px;
+      padding: 16px 4px 22px;
       text-align: center;
-    }
-
-    /* ---------- 首屏 ---------- */
-    .hero {
-      padding: 56px 0 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .polaroid--hero {
-      width: min(380px, calc(100% - 24px));
-      padding: 18px 18px 0;
-      transform: rotate(-2deg);
-    }
-    .polaroid--hero h1 {
-      margin: 0;
-      font-size: clamp(40px, 10vw, 56px);
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: .04em;
-    }
-    .polaroid--hero figcaption { padding: 20px 4px 26px; }
-    .lede {
-      margin: 28px 0 0;
+      font-size: 14px;
       color: var(--muted);
-      text-align: center;
+      letter-spacing: .12em;
     }
 
-    /* 唯一的動態：封面照片像拍立得一樣慢慢顯影 */
-    .polaroid--hero .photo img,
-    .polaroid--hero .photo .ph {
-      animation: develop 2.4s ease-out both;
-    }
+    /* 唯一的動態：封面照片慢慢顯影 */
+    .hero .photo img, .hero .photo .ph { animation: develop 2.4s ease-out both; }
     @keyframes develop {
-      from { opacity: 0; filter: brightness(.3) saturate(0); }
+      from { opacity: 0; filter: brightness(1.4) saturate(0); }
       to   { opacity: 1; filter: none; }
     }
 
-    /* ---------- 條件與價格 ---------- */
-    .info {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-      padding: 24px 0 56px;
-    }
-    @media (min-width: 760px) {
-      .info { grid-template-columns: 1.6fr 1fr; align-items: start; }
-    }
-    .note {
-      background: var(--paper);
-      padding: 28px 28px 32px;
-      box-shadow: 0 1px 2px rgba(42,47,69,.12);
-    }
-    h2 {
-      font-family: "LXGW WenKai TC", serif;
-      font-size: 28px;
-      font-weight: 700;
-      line-height: 1.3;
-      margin: 0 0 16px;
-    }
-    .conditions {
+    /* ---------- 區塊標題：中文主標 + 英文斜體副標 ---------- */
+    .section { padding: 72px 0; border-top: 1px solid var(--line); }
+    .heading { text-align: center; margin: 0 0 40px; }
+    .heading h2 {
       margin: 0;
+      font-family: var(--serif-tc);
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: .3em;
+      padding-left: .3em;
+      line-height: 1.5;
+    }
+    .heading .en {
+      display: block;
+      margin-top: 4px;
+      font-family: var(--serif-en);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 18px;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+
+    /* ---------- 拍攝條件 ---------- */
+    .conditions {
+      max-width: 34em;
+      margin: 0 auto;
       padding: 0;
       list-style: none;
     }
     .conditions li {
-      padding: 12px 0 12px 1.4em;
-      border-bottom: 1px dashed var(--rule);
-      position: relative;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
     }
-    .conditions li:last-child { border-bottom: 0; }
-    .conditions li::before {
-      content: "";
-      position: absolute;
-      left: 2px; top: 1.3em;
-      width: 7px; height: 7px;
-      border: 1.5px solid var(--ink);
-      border-radius: 50%;
-    }
-    .conditions .todo { color: #9AA1B3; }
+    .conditions li:first-child { border-top: 1px solid var(--line); }
+    .conditions .todo { color: var(--muted); }
 
-    .price { text-align: center; }
+    /* ---------- 價格 ---------- */
+    /* 放在拍攝條件最後一條底線下方，靠右 */
+    .price {
+      max-width: 34em;
+      margin: 24px auto 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: baseline;
+      gap: 1.2em;
+      line-height: 1.4;
+    }
+    .price .label {
+      font-size: 18px;
+      font-weight: 400;
+      letter-spacing: .2em;
+    }
+    .price .label .en {
+      margin-left: .4em;
+      font-family: var(--serif-en);
+      font-style: italic;
+      font-weight: 300;
+      font-size: 19px;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+    /* 數字用和頁首簽名同一款手寫體 */
     .price .amount {
-      font-family: "LXGW WenKai TC", serif;
-      font-size: clamp(44px, 12vw, 56px);
-      font-weight: 700;
-      line-height: 1.1;
-      color: var(--gold);
-      margin: 8px 0 0;
-      font-variant-numeric: tabular-nums;
+      margin: 0;
+      font-family: var(--script);
+      font-weight: 400;
+      font-size: 30px;   /* 手寫體字面較小，放大才會和旁邊的字看起來一樣大 */
+      letter-spacing: .02em;
     }
     .price .unit {
-      font-family: "LXGW WenKai TC", serif;
-      font-size: 24px;
+      font-family: var(--script);
+      font-size: 19px;   /* 和旁邊的 Price 一樣大 */
       color: var(--gold);
-      margin: 0;
-    }
-    .price .per {
-      margin: 14px 0 0;
-      color: var(--muted);
-      font-size: 15px;
+      margin-left: .25em;
     }
 
     /* ---------- 作品 ---------- */
-    .works { padding: 0 0 72px; }
-    .works h2 { text-align: center; margin-bottom: 32px; }
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 40px 32px;
-      padding: 0 8px;
+      gap: 32px;
     }
-    .gallery .polaroid { transition: transform .25s ease; }
-    .gallery .polaroid:nth-child(3n+1) { transform: rotate(-2.5deg); }
-    .gallery .polaroid:nth-child(3n+2) { transform: rotate(1.5deg) translateY(10px); }
-    .gallery .polaroid:nth-child(3n+3) { transform: rotate(-1deg); }
-    .gallery .polaroid:hover { transform: rotate(0) scale(1.02); }
-    .gallery figcaption { font-size: 19px; color: var(--ink); }
+    .gallery .polaroid { transition: box-shadow .3s ease; }
+    .gallery .polaroid:hover { box-shadow: 0 1px 1px rgba(43,41,38,.04), 0 24px 48px -22px rgba(43,41,38,.38); }
 
     footer {
       text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-      padding: 0 16px 40px;
+      padding: 48px 16px 56px;
+      border-top: 1px solid var(--line);
     }
+    footer .signature { font-size: 28px; margin: 0; }
 
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
@@ -195,60 +214,61 @@
 <body>
 
   <header class="wrap hero">
-    <figure class="polaroid polaroid--hero">
+    <h1>拍立得繪簽</h1>
+    <p class="signature">Polaroid &amp; Signature</p>
+    <figure class="polaroid">
       <div class="photo">
         <!-- 封面照片：放一張圖到 images/hero.jpg 就會自動顯示 -->
         <img src="images/hero.jpg" alt="拍立得繪簽封面作品" onerror="this.parentElement.classList.add('empty')">
-        <span class="ph">封面照片待補</span>
+        <span class="ph">cover photo</span>
       </div>
-      <figcaption><h1>拍立得繪簽</h1></figcaption>
     </figure>
-    <p class="lede">拍攝服務介紹與預約須知</p>
+    <p class="lede">a photograph, signed by hand</p>
   </header>
 
   <main class="wrap">
-    <section class="info">
-      <div class="note">
+    <section class="section">
+      <div class="heading">
         <h2>拍攝條件</h2>
-        <!-- 在這裡補上拍攝條件：一行一個 <li>，把 class="todo" 拿掉即可 -->
-        <ul class="conditions">
-          <li class="todo">條件一（待補）</li>
-          <li class="todo">條件二（待補）</li>
-          <li class="todo">條件三（待補）</li>
-        </ul>
+        <span class="en">Conditions</span>
       </div>
-
-      <div class="note price">
-        <h2>價格</h2>
-        <p class="amount">250,000</p>
-        <p class="unit">gil</p>
-        <!-- 想加計價說明（例如每張、每組）可以寫在這行 -->
-        <p class="per">詳細內容請參考拍攝條件</p>
+      <!-- 在這裡補上拍攝條件：一行一個 <li>，把 class="todo" 拿掉即可 -->
+      <ul class="conditions">
+        <li class="todo">條件一（待補）</li>
+        <li class="todo">條件二（待補）</li>
+        <li class="todo">條件三（待補）</li>
+      </ul>
+      <div class="price">
+        <span class="label">價格<span class="en">Price</span></span>
+        <p class="amount">250,000<span class="unit">gil</span></p>
       </div>
     </section>
 
-    <section class="works">
-      <h2>作品</h2>
+    <section class="section">
+      <div class="heading">
+        <h2>作品</h2>
+        <span class="en">Works</span>
+      </div>
       <!-- 作品圖：把圖片放到 images/ 資料夾，檔名對上 work-1.jpg、work-2.jpg、work-3.jpg 即可 -->
       <div class="gallery">
         <figure class="polaroid">
           <div class="photo">
             <img src="images/work-1.jpg" alt="作品一" loading="lazy" onerror="this.parentElement.classList.add('empty')">
-            <span class="ph">作品一待補</span>
+            <span class="ph">work i</span>
           </div>
           <figcaption>作品一</figcaption>
         </figure>
         <figure class="polaroid">
           <div class="photo">
             <img src="images/work-2.jpg" alt="作品二" loading="lazy" onerror="this.parentElement.classList.add('empty')">
-            <span class="ph">作品二待補</span>
+            <span class="ph">work ii</span>
           </div>
           <figcaption>作品二</figcaption>
         </figure>
         <figure class="polaroid">
           <div class="photo">
             <img src="images/work-3.jpg" alt="作品三" loading="lazy" onerror="this.parentElement.classList.add('empty')">
-            <span class="ph">作品三待補</span>
+            <span class="ph">work iii</span>
           </div>
           <figcaption>作品三</figcaption>
         </figure>
@@ -256,7 +276,9 @@
     </section>
   </main>
 
-  <footer>拍立得繪簽</footer>
+  <footer>
+    <p class="signature">Polaroid &amp; Signature</p>
+  </footer>
 
 </body>
 </html>
